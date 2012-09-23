@@ -1,0 +1,23 @@
+<resources>
+
+    <string name="app_name">Hope</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_login">Hope</string>
+    <string-array name="accountType">
+        <item>Donor</item>
+        <item>Charity</item>
+    </string-array>
+    <string name="login_banner">Hope Login</string>
+    <string name="signup_banner">Hope Signup</string>
+    
+    <string name="donor_banner">Hope Donate</string>
+    <string-array name="foodType">
+        <item>Raw</item>
+        <item>Cooked</item>
+        <item>Frozen</item>
+    </string-array>
+    
+    <string name="charity_banner">Hope Collect</string>
+
+</resources>
