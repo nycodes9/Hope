@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -19,6 +23,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +35,7 @@ public class SignupActivity extends FragmentActivity {
 	public static final String TAG = "SignupActivity";
 	
 	Spinner signupTypeSP;
+	String signupTypeSPVal = "";
 	
 	EditText signupEmailET;
 	ImageButton signupEmailIB;
@@ -52,8 +58,11 @@ public class SignupActivity extends FragmentActivity {
         mContext = this;
         
         signupEmailET = (EditText) findViewById(R.id.signup_ac_emailET);
-        
+        signupLocET = (EditText) findViewById(R.id.signup_ac_locationET);
         signupEmailIB = (ImageButton) findViewById(R.id.signup_ac_emailIB);
+        signupTypeSP = (Spinner) findViewById(R.id.signup_typeSP);
+        signupPhoneET = (EditText) findViewById(R.id.signup_ac_phoneET);
+        
         signupEmailIB.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -82,7 +91,17 @@ public class SignupActivity extends FragmentActivity {
 			}
 		});
         
+        signupTypeSPVal = signupTypeSP.getItemAtPosition(0).toString();
+        //signupTypeSPVal = "Donor";
         
+        signupTypeSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+        {
+        	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+        	{
+               signupTypeSPVal  = parent.getItemAtPosition(pos).toString();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {}
+		});
         
         signupPhoneET = (EditText) findViewById(R.id.signup_ac_phoneET);
         
@@ -106,13 +125,71 @@ public class SignupActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				
+				//make sure fields aren't blank
+				if (signupEmailET.toString().trim().length() > 0 &&
+						signupLocET.toString().trim().length() > 0 &&
+						signupPhoneET.toString().trim().length() > 0) 
+				{
+					//create a new user with the credentials given
+					ParseUser newUser = new ParseUser();
+					newUser.setUsername(signupEmailET.getText().toString());
+					newUser.setPassword("helloworld");
+					newUser.setEmail(signupEmailET.getText().toString());
+					newUser.put("address", signupLocET.getText().toString());
+					newUser.put("User_Phone", signupPhoneET.getText().toString());
+					
+					if (signupTypeSPVal.equals("Donor")) 
+					{
+						newUser.put("isDonor", true);
+					}
+					else 
+					{
+						newUser.put("isDonor", false);
+					}
+					
+					
+					newUser.signUpInBackground(new SignUpCallback() 
+					{
+						public void done(ParseException e) 
+						{
+							//no exception means the signup succeeded.
+							if (e == null) 
+							{
+								startActivity(new Intent(mContext, DonateActivity.class));
+							}
+							//something went wrong. print error message
+							else 
+							{
+								
+							}
+						}
+					});
+					
+					
+				}
+				//one of the fields are blank so output error message
+				else 
+				{
+					AlertDialog.Builder alertDialog;
+					alertDialog = new AlertDialog.Builder(mContext);
+					alertDialog.setPositiveButton("Ok",
+						    new DialogInterface.OnClickListener() {
+						        public void onClick(DialogInterface dialog, int which) {
+						           
+						        }
+						    });
+					alertDialog.setTitle("Error");
+					alertDialog.setMessage("something went wrong!");
+					alertDialog.create().show();
+				}
+				
+				
+				 
 				
 				
 				
 				
 				
-				
-				startActivity(new Intent(mContext, DonateActivity.class));
 			}
 		});
         
