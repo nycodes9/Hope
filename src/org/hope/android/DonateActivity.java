@@ -79,7 +79,6 @@ public class DonateActivity extends FragmentActivity {
         donateBtn = (Button) findViewById(R.id.donor_donateBtn);
         donateBtn.setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) 
 			{
 				

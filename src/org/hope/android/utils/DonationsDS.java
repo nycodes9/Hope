@@ -16,7 +16,7 @@ public class DonationsDS {
 	public String donorEmail;
 	public String donorPhoneNum;
 	
-	public FOOD_TYPES type;
+	public String type;
 	public Date expDate;
 	public float wtQty;
 	public Date pickupDate;

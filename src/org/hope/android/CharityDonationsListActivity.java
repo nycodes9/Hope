@@ -112,6 +112,7 @@ public class CharityDonationsListActivity extends FragmentActivity {
 						entry.donationID = po.getObjectId().toString();
 						entry.donorEmail = po.getString("donor_email");
 						entry.donorPhoneNum = po.getString("donor_phone");
+						entry.type = po.getString("food_type");
 						entry.expDate = po.getDate("expire_date");
 						entry.pickupAfterTime = po.getDate("available_start_time");
 						entry.pickupBeforeTime = po.getDate("available_end_time");
@@ -185,22 +186,18 @@ public class CharityDonationsListActivity extends FragmentActivity {
     
     class DonationsDataAdapter extends BaseAdapter {
 
-		@Override
 		public int getCount() {
 			return donationList == null ? 0 : donationList.size();
 		}
 
-		@Override
 		public DonationsDS getItem(int position) {
 			return donationList == null ? null : donationList.get(position);
 		}
 
-		@Override
 		public long getItemId(int position) {
 			return donationList == null ? Long.MIN_VALUE : position;
 		}
 
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			
 			ViewHolder holder;
@@ -222,7 +219,9 @@ public class CharityDonationsListActivity extends FragmentActivity {
 			}
 			
 			holder.donorEmailTV.setText(donationList.get(position).donorEmail);
-			holder.foodTypeTV.setText(donationList.get(position).type.name().toLowerCase());
+			
+			
+			holder.foodTypeTV.setText(donationList.get(position).type.toLowerCase());
 			holder.expDateTV.setText(sdatef.format(donationList.get(position).expDate));
 			holder.wtQtyTV.setText(Float.toString(donationList.get(position).wtQty));
 			holder.pickupDateTV.setText(sdatef.format(donationList.get(position).pickupDate));
@@ -235,7 +234,6 @@ public class CharityDonationsListActivity extends FragmentActivity {
 			
 			holder.pickupBtnTV.setOnClickListener(new OnClickListener() {
 				
-				@Override
 				public void onClick(View v) {
 					/**
 					 * TODO 1. Open new activity with map co-ords to review and confirm

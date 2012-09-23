@@ -66,7 +66,6 @@ public class SignupActivity extends FragmentActivity {
 
 		signupEmailIB.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
 				Account[] accounts = AccountManager.get(mContext).getAccounts();
@@ -106,7 +105,6 @@ public class SignupActivity extends FragmentActivity {
 		signupPhoneIB = (ImageButton) findViewById(R.id.signup_ac_phoneIB);
 		signupPhoneIB.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				String phoneDigits = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE))
 						.getLine1Number();
@@ -119,7 +117,6 @@ public class SignupActivity extends FragmentActivity {
 		signupCreateBtn = (Button) findViewById(R.id.signup_ac_createBtn);
 		signupCreateBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 
 				// make sure fields aren't blank

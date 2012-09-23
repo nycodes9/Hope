@@ -66,7 +66,6 @@ public class LoginActivity extends FragmentActivity {
         signupBtn = (Button) findViewById(R.id.login_signupBtn);
         signupBtn.setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				startActivityFromLogin(SignupActivity.class);
 			}
@@ -75,7 +74,6 @@ public class LoginActivity extends FragmentActivity {
         loginBtn = (Button) findViewById(R.id.login_loginBtn);
         loginBtn.setOnClickListener(new OnClickListener() 
         {
-        	@Override
         	public void onClick(View v) 
         	{
         		
