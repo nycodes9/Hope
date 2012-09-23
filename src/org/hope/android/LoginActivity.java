@@ -2,12 +2,17 @@ package org.hope.android;
 
 import java.util.List;
 
+import org.hope.android.utils.API_KEYS;
+
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.ParseObject;
+import com.parse.PushService;
+import com.parse.ParseBroadcastReceiver;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +36,11 @@ public class LoginActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         mContext = this;
+        
+        //initialize Parse
+        Parse.initialize(this, API_KEYS.PARSE_APP_ID, API_KEYS.PARSE_CLIENT_KEY); 
+        PushService.subscribe(this, "", LoginActivity.class);
+        
         
         //Do an initial check to see if the user is already signed in
         //if he is, just redirect to the 'logged in' page

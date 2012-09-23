@@ -105,6 +105,13 @@ public class SignupActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
+				
+				
+				
+				
+				
+				
+				
 				startActivity(new Intent(mContext, DonateActivity.class));
 			}
 		});
