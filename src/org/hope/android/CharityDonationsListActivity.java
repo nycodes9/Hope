@@ -3,11 +3,16 @@ package org.hope.android;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.hope.android.utils.DonationsDS;
 import org.hope.android.utils.DonationsDS.FOOD_TYPES;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import android.app.Activity;
@@ -29,6 +34,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CharityDonationsListActivity extends FragmentActivity {
 
@@ -85,8 +91,66 @@ public class CharityDonationsListActivity extends FragmentActivity {
 				 * 4. Prepare search functionality features 
 				 * 5. if Parse fetch exception return Boolean.FALSE else Boolean.TRUE   
 				 */
+				ParseQuery query = new ParseQuery("contributions");
+				query.setLimit(25);
 				
-				/************** Dummy Data fro Test **************/
+				try 
+				{
+					List<ParseObject> list  = query.find();
+					
+					for (int i = 0; i < list.size(); i++) 
+					{
+						ParseObject po = list.get(i);
+						DonationsDS entry = new DonationsDS();
+						
+						//set flag to disable button
+						if (po.getString("charity_address") != null && po.getString("charity_address").length() == 0) 
+						{
+							
+						}
+						
+						entry.donationID = po.getObjectId().toString();
+						entry.donorEmail = po.getString("donor_email");
+						entry.donorPhoneNum = po.getString("donor_phone");
+						entry.expDate = po.getDate("expire_date");
+						entry.pickupAfterTime = po.getDate("available_start_time");
+						entry.pickupBeforeTime = po.getDate("available_end_time");
+						entry.pickupDate = po.getDate("available_end_time");
+						entry.pickupInfoExtraStr = po.getString("food_name");
+						entry.pickupLocAndroidAddress = po.getString("donor_address");
+						entry.wtQty = po.getNumber("food_weight").floatValue();
+						donationList.add(entry);
+						
+					}
+					/*
+					Context finishedToastContext = getApplicationContext();
+					CharSequence finishedToastText = "Finished retrieving data";
+					int duration = Toast.LENGTH_LONG;
+					Toast toast = Toast.makeText(finishedToastContext, finishedToastText , duration);
+					toast.show();
+					*/
+					return true;
+				}
+				catch (ParseException e) 
+				{
+					/*Context errorToastContext = getApplicationContext();
+					CharSequence errorToastText = "ERROR:" + e.getMessage();
+					int duration = Toast.LENGTH_LONG;
+					Toast toast = Toast.makeText(errorToastContext, errorToastText , duration);
+					toast.show();
+					*/
+					
+					return false;
+				}
+				
+
+				
+				
+				
+				
+
+				/*
+				//************** Dummy Data fro Test **************
 				for (int i = 0 ; i < 5 ; i++){
 					DonationsDS temp = new DonationsDS();
 					temp.donationID = i;
@@ -105,8 +169,9 @@ public class CharityDonationsListActivity extends FragmentActivity {
 					
 					donationList.add(temp);
 				}
+				
 				return Boolean.TRUE;
-				/***************************************************/
+				*/
 			}
 
 			@Override
@@ -132,7 +197,7 @@ public class CharityDonationsListActivity extends FragmentActivity {
 
 		@Override
 		public long getItemId(int position) {
-			return donationList == null ? Long.MIN_VALUE : donationList.get(position).donationID;
+			return donationList == null ? Long.MIN_VALUE : position;
 		}
 
 		@Override

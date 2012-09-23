@@ -11,7 +11,8 @@ public class DonationsDS {
 		RAW, COOKED, FROZEN;
 	}
 	
-	public long donationID;
+	
+	public String donationID;
 	public String donorEmail;
 	public String donorPhoneNum;
 	
@@ -22,7 +23,8 @@ public class DonationsDS {
 	public Date pickupAfterTime;
 	public Date pickupBeforeTime;
 	public String pickupInfoExtraStr;
-	
-	public Address pickupLocAndroidAddress;
+
+	public boolean disableBtn;
+	public String pickupLocAndroidAddress;
 	
 }

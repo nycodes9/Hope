@@ -144,9 +144,11 @@ public class DonateActivity extends FragmentActivity {
 				donation.put("donor_name", currentUser.getUsername());
 				donation.put("donor_address", currentUser.getString("address"));
 				donation.put("donor_phone", phoneNumber);
+				donation.put("donor_email", currentUser.getString("email"));
 				donation.put("available_start_time", pickupTimeBefore);
 				donation.put("available_end_time", pickupTimeAfter);
 				donation.put("additional_info", additionalInfo);
+				
 				
 				//generate a quick toast message
 				Context toastContext = getApplicationContext();
