@@ -1,5 +1,7 @@
 package org.hope.android;
 
+import java.util.Date;
+
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -60,12 +62,37 @@ public class DonateActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) 
 			{
+				
+				String foodName = donateFoodNameET.getText().toString();
+				String additionalInfo = donateAddInfoET.getText().toString();
+				
+				int foodWeight = 0;
+				if (!donateFoodWtET.getText().toString().contains("-")) 
+				{
+					foodWeight = Integer.parseInt(donateFoodWtET.getText().toString().trim());
+				}
+				//Date date = donateExpDateDP.
+				
+				
 				//prepare data for sending
 				ParseObject donation = new ParseObject("contributions");
-				//donation.put()
+				donation.put("food_name", "");
+				donation.put("food_type", "");
+				donation.put("expire_date", "");
+				donation.put("food_weight", "");
 				
+				donation.put("charity_name", "");
+				donation.put("charity_address", "");
+				donation.put("charity_phone", "");
 				
+				donation.put("donor_name", "");
+				donation.put("donor_address", "");
+				donation.put("donor_phone", "");
+				donation.put("available_start_time", "");
+				donation.put("available_end_time", "");
+				donation.put("additional_info", "");
 				
+				donation.saveInBackground();
 				//donation.put
 				
 				
