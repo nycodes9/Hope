@@ -10,6 +10,7 @@ import org.hope.android.utils.DonationsDS.FOOD_TYPES;
 
 import com.parse.ParseUser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -214,6 +215,7 @@ public class CharityDonationsListActivity extends FragmentActivity {
                 ParseUser.logOut();
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 startActivity(new Intent(mContext, LoginActivity.class));
+                ((Activity) mContext).finish();
                 
                 return true;
             default:
