@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 public class DonateActivity extends FragmentActivity {
 
@@ -27,12 +28,13 @@ public class DonateActivity extends FragmentActivity {
 	String donateFoodTypeSPVal = "";
 	
 	DatePicker donateExpDateDP;
-	DatePicker donatePickUpAfterDP;
-	DatePicker donatePickUpBeforeDP;
+	DatePicker donatePickUpDP;
+	TimePicker donatePickUpAfterDP;
+	TimePicker donatePickUpBeforeDP;
 	
 	EditText donateFoodWtET;
 	EditText donateAddInfoET;
-	
+	EditText donateFoodNameET;
 	
 	Button donateBtn;
 	
@@ -43,11 +45,13 @@ public class DonateActivity extends FragmentActivity {
         
         mContext = this;
         
+        donateFoodNameET = (EditText) findViewById(R.id.donor_donate_foodNameET);
         donateAddInfoET = (EditText) findViewById(R.id.donor_donate_pickupAddlnInfoET);
         donateFoodWtET = (EditText) findViewById(R.id.donor_donate_wtET);
         donateExpDateDP = (DatePicker) findViewById(R.id.donor_donate_expDP);
-        donatePickUpBeforeDP = (DatePicker) findViewById(R.id.donor_donate_pickupBeforeTP);
-        donatePickUpAfterDP = (DatePicker) findViewById(R.id.donor_donate_pickupAfterTP);
+        donatePickUpDP = (DatePicker) findViewById(R.id.donor_donate_pickupDP);
+        donatePickUpBeforeDP = (TimePicker) findViewById(R.id.donor_donate_pickupBeforeTP);
+        donatePickUpAfterDP = (TimePicker) findViewById(R.id.donor_donate_pickupAfterTP);
         donateFoodTypeSP = (Spinner) findViewById(R.id.donor_donate_foodTypeSP);
         
         donateBtn = (Button) findViewById(R.id.donor_donateBtn);
@@ -58,6 +62,10 @@ public class DonateActivity extends FragmentActivity {
 			{
 				//prepare data for sending
 				ParseObject donation = new ParseObject("contributions");
+				//donation.put()
+				
+				
+				
 				//donation.put
 				
 				

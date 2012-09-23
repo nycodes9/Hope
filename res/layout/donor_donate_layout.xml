@@ -14,7 +14,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="#EBFFD6" >
-
+            
+	        <EditText
+	            android:id="@+id/donor_donate_foodNameET"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="16dp"
+	            android:layout_marginRight="16dp"
+	            android:layout_marginTop="16dp"
+	            android:ems="10"
+	            android:hint="Food Name (required)*"
+	            android:inputType="textMultiLine" >
+	        </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="#EBFFD6" >
+			
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
