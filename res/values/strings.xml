@@ -2,7 +2,7 @@
 
     <string name="app_name">Hope</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_settings">Logout</string>
     <string name="title_activity_login">Hope</string>
     <string-array name="accountType">
         <item>Donor</item>
@@ -16,6 +16,14 @@
         <item>Raw</item>
         <item>Cooked</item>
         <item>Frozen</item>
+    </string-array>
+    
+    <string-array name="sortType">
+        <item>Expiration Date</item>
+        <item>Quantity</item>
+        <item>Pickup Date/Time</item>
+        <item>Type</item>
+        <item>Location</item>
     </string-array>
     
     <string name="charity_banner">Hope Collect</string>

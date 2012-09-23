@@ -47,7 +47,7 @@ public class LoginActivity extends FragmentActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) 
         {
-        	
+        	//HELLO
         	//return;
         }
         
