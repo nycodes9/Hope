@@ -14,6 +14,7 @@ import com.parse.ParseObject;
 import com.parse.PushService;
 import com.parse.ParseBroadcastReceiver;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,14 +42,24 @@ public class LoginActivity extends FragmentActivity {
         Parse.initialize(this, API_KEYS.PARSE_APP_ID, API_KEYS.PARSE_CLIENT_KEY); 
         PushService.subscribe(this, "", LoginActivity.class);
         
+        //instantiate variables
+        userEmail = (EditText) findViewById(R.id.login_emailET);
+		userPwd = (EditText) findViewById(R.id.login_pwdET);
+		
         
         //Do an initial check to see if the user is already signed in
         //if he is, just redirect to the 'logged in' page
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) 
         {
-        	//HELLO
-        	//return;
+        	if (currentUser.getBoolean("isDonor")) 
+        	{
+        		startActivityFromLogin(DonateActivity.class);
+        	}
+        	else 
+        	{
+        		startActivityFromLogin(CharityDonationsListActivity.class);
+        	}
         }
         
         
@@ -57,7 +68,7 @@ public class LoginActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(mContext, SignupActivity.class));
+				startActivityFromLogin(SignupActivity.class);
 			}
 		});
         
@@ -67,49 +78,66 @@ public class LoginActivity extends FragmentActivity {
         	@Override
         	public void onClick(View v) 
         	{
-        		//Try to authenticate in background with Parse
-        		ParseUser.logInInBackground(userEmail.toString(), userPwd.toString(), new LogInCallback() 
+        		
+        		
+        		if (userEmail.getText().toString().trim().length() > 0 &&
+        				userPwd.getText().toString().length() > 0) 
         		{
-        			public void done(ParseUser user, ParseException e) 
-        			{
-        				//if something is returned, then authentication was successful
-        				if (user != null) 
-        				{
-        					ParseQuery query = ParseUser.getQuery();
-        					query.whereEqualTo("isDonor", true).whereEqualTo("username", user.getUsername());
-        					query.findInBackground(new FindCallback() 
-        					{
-        						public void done (List<ParseObject> objects,  ParseException e) 
-        						{
-        							//if query didn't fail and it gave results
-        							//then the user WAS a donor so redirect to
-        							if (e == null && objects.size() > 0) 
-        							{
-        								startActivity(new Intent(mContext, DonateActivity.class));
-        							}
-        							//if the query didn't return anything, then the user
-        							//was a business
-        							else if (e == null && objects.size() == 0) 
-        							{
-        								startActivity(new Intent(mContext, CharityDonationsListActivity.class));
-        							}
-        							//something went wrong with the query.
-        							else 
-        							{
-        								
-        							}
-        						}
-        					});
-        				}
-        				//if not, display error message to user
-        				else 
-        				{
-        					
-        				}
-        			}
-        		} );
+        			//Try to authenticate in background with Parse
+            		ParseUser.logInInBackground(userEmail.getText().toString(), userPwd.getText().toString(), new LogInCallback() 
+            		{
+            			public void done(ParseUser user, ParseException e) 
+            			{
+            				//if something is returned, then authentication was successful
+            				if (user != null) 
+            				{
+            					ParseQuery query = ParseUser.getQuery();
+            					query.whereEqualTo("isDonor", true).whereEqualTo("username", user.getUsername());
+            					query.findInBackground(new FindCallback() 
+            					{
+            						public void done (List<ParseObject> objects,  ParseException e) 
+            						{
+            							//if query didn't fail and it gave results
+            							//then the user WAS a donor so redirect to
+            							if (e == null && objects.size() > 0) 
+            							{
+            								startActivityFromLogin(DonateActivity.class);
+            							}
+            							//if the query didn't return anything, then the user
+            							//was a business
+            							else if (e == null && objects.size() == 0) 
+            							{
+            								startActivityFromLogin(CharityDonationsListActivity.class);
+            								((Activity) mContext).finish();
+            							}
+            							//something went wrong with the query.
+            							else 
+            							{
+            								
+            							}
+            						}
+            					});
+            				}
+            				//if not, display error message to user
+            				else 
+            				{
+            					
+            				}
+            			}
+            		} );
+        		}
+        		
+        		
+        		
         	}
         });
     }
-
+    
+    //created so that they can't just come back to the login page
+    //without explicitely logging out.
+    public void startActivityFromLogin(Class<?> cls) 
+    {
+    	startActivity(new Intent(mContext, cls));
+    	((Activity) mContext).finish();
+    }
 }

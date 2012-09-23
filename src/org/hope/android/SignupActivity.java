@@ -10,6 +10,7 @@ import com.parse.SignUpCallback;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -121,10 +122,8 @@ public class SignupActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 
-				startActivity(new Intent(mContext, DonateActivity.class));
-				
 				// make sure fields aren't blank
-				/*if (signupEmailET.toString().trim().length() > 0 && signupLocET.toString().trim().length() > 0
+				if (signupEmailET.toString().trim().length() > 0 && signupLocET.toString().trim().length() > 0
 						&& signupPhoneET.toString().trim().length() > 0) {
 					// create a new user with the credentials given
 					ParseUser newUser = new ParseUser();
@@ -143,8 +142,20 @@ public class SignupActivity extends FragmentActivity {
 					newUser.signUpInBackground(new SignUpCallback() {
 						public void done(ParseException e) {
 							// no exception means the signup succeeded.
-							if (e == null) {
-								startActivity(new Intent(mContext, DonateActivity.class));
+							if (e == null) 
+							{
+								//find out where to route the user to.
+								//if the user is a donor, then go to the Donate Page
+								if (signupTypeSPVal.equals("Donor")) 
+								{
+									startActivityFromSignup(DonateActivity.class);
+								}
+								//if the user is a charity, then route to the charity page
+						        else 
+						        {
+						        	startActivityFromSignup(CharityDonationsListActivity.class);
+						        }
+						        
 							}
 							// something went wrong. print error message
 							else {
@@ -164,11 +175,19 @@ public class SignupActivity extends FragmentActivity {
 					alertDialog.setTitle("Error");
 					alertDialog.setMessage("something went wrong!");
 					alertDialog.create().show();
-				}*/
+				}
 
 			}
 		});
 
 	}
-
+	
+	
+	//created so that they can't just come back to the signup page
+    //without explicitely logging out.
+    public void startActivityFromSignup(Class<?> cls) 
+    {
+    	startActivity(new Intent(mContext, cls));
+    	((Activity) mContext).finish();
+    }
 }

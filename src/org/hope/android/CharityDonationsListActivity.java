@@ -8,7 +8,10 @@ import java.util.Locale;
 import org.hope.android.utils.DonationsDS;
 import org.hope.android.utils.DonationsDS.FOOD_TYPES;
 
+import com.parse.ParseUser;
+
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,6 +74,9 @@ public class CharityDonationsListActivity extends FragmentActivity {
 
 			@Override
 			protected Boolean doInBackground(Void... params) {
+				
+				
+				
 				/**
 				 * TODO 1.Call <h6>Parse Query here to populate donations 
 				 * 2. create DonationsDS objects and add these to array list
@@ -203,9 +209,12 @@ public class CharityDonationsListActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case R.id.menu_settings:
             	Log.i(this.getClass().getName(), "Logout presssed");
-                /**
-                 * logout code
-                 */
+            	
+            	//logging out of the current user and then setting currentUser to null
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                startActivity(new Intent(mContext, LoginActivity.class));
+                
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
