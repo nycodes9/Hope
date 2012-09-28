@@ -12,9 +12,12 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
@@ -50,6 +53,11 @@ public class SignupActivity extends FragmentActivity {
 	Button signupCreateBtn;
 
 	Context mContext;
+	
+	static final int DIALOG_LOGIN_PROGRESS = 0xD1;
+	static final int DIALOG_LOGIN_FAILED = 0xD2;
+	
+	ProgressDialog progressDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,8 +96,6 @@ public class SignupActivity extends FragmentActivity {
 			}
 		});
 
-		signupTypeSPVal = signupTypeSP.getItemAtPosition(0).toString();
-		// signupTypeSPVal = "Donor";
 
 		signupTypeSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -123,7 +129,7 @@ public class SignupActivity extends FragmentActivity {
 				if (signupEmailET.toString().trim().length() > 0 && signupLocET.toString().trim().length() > 0
 						&& signupPhoneET.toString().trim().length() > 0) {
 					// create a new user with the credentials given
-					ParseUser newUser = new ParseUser();
+					final ParseUser newUser = new ParseUser();
 					newUser.setUsername(signupEmailET.getText().toString());
 					newUser.setPassword("helloworld");
 					newUser.setEmail(signupEmailET.getText().toString());
@@ -136,30 +142,51 @@ public class SignupActivity extends FragmentActivity {
 						newUser.put("isDonor", false);
 					}
 
-					newUser.signUpInBackground(new SignUpCallback() {
-						public void done(ParseException e) {
-							// no exception means the signup succeeded.
-							if (e == null) 
-							{
-								//find out where to route the user to.
-								//if the user is a donor, then go to the Donate Page
-								if (signupTypeSPVal.equals("Donor")) 
-								{
+					
+					new AsyncTask<Void, Void, Boolean>() {
+
+						@Override
+						protected void onPreExecute() {
+							super.onPreExecute();
+							progressDialog = new ProgressDialog(mContext);
+							progressDialog.setCancelable(false);
+							progressDialog.setCanceledOnTouchOutside(false);
+							progressDialog.setMessage("Registering");
+							progressDialog.show();
+						}
+
+						@Override
+						protected Boolean doInBackground(Void... params) {
+							
+							try {
+								newUser.signUp();
+							} catch (ParseException e) {
+								e.printStackTrace();
+								return Boolean.FALSE;
+							}
+							return Boolean.TRUE;
+						}
+
+						@Override
+						protected void onPostExecute(Boolean success) {
+							super.onPostExecute(success);
+							if (success){
+								if (signupTypeSPVal.equals("Donor")){
 									startActivityFromSignup(DonateActivity.class);
-								}
-								//if the user is a charity, then route to the charity page
-						        else 
-						        {
+								} else { 
 						        	startActivityFromSignup(CharityDonationsListActivity.class);
 						        }
-						        
+							} else {
+								Toast.makeText(mContext, "Registering failed !!  Try again", Toast.LENGTH_SHORT).show();
 							}
-							// something went wrong. print error message
-							else {
-
+							
+							if (progressDialog != null) {
+								progressDialog.dismiss();
 							}
 						}
-					});
+						
+					}.execute();
+					
 
 				} else { // one of the fields are blank so output error message
 					AlertDialog.Builder alertDialog;
@@ -187,4 +214,5 @@ public class SignupActivity extends FragmentActivity {
     	startActivity(new Intent(mContext, cls));
     	((Activity) mContext).finish();
     }
+    
 }
